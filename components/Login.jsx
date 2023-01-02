@@ -2,21 +2,22 @@ import React from "react";
 import { useState, useEffect } from "react";
 import { getAuth, signInWithEmailAndPassword } from "firebase/auth";
 import app from "../utils/firebase";
-
+import { useRouter } from "next/router";
 function Main() {
   const auth = getAuth(app);
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const router = useRouter();
   const signUp = () => {
-    signInWithEmailAndPassword(auth, email, password)
-      .then((userCredential) => {
-        const user = userCredential.user;
-      })
-      .catch((error) => {
-        alert("no user found");
-        const errorCode = error.code;
-        const errorMessage = error.message;
-      });
+    if (email.length && password.length) {
+      signInWithEmailAndPassword(auth, email, password)
+        .then((userCredential) => {
+          const user = userCredential.user;
+        })
+        .catch((error) => {
+          alert(error);
+        });
+    }
   };
 
   return (
@@ -29,9 +30,8 @@ function Main() {
           <p className="mt-[2em] lg:w-[15vw] sm:w-[30vw] mr-[10vw] text-xl text-[#4B4B4B]">
             To request a new account just click the link below
           </p>
-          <button onClick={() => auth.signOut()}>signOut</button>
           <p className="mt-[2em] bg-[#dc3d3a] w-[7em] p-4 font-medium text-[white] rounded-lg hover:scale-110 transition-all duration-500">
-            <button>Click here</button>
+            <a href="/register">Click here</a>
           </p>
         </div>
         <div className="bg-white hover:scale-105 transition-all duration-500 max-w-[550px] rounded-3xl lg:w-[30vw] lg:min-h-0  shadow-2xl shadow-[#4B4B4B] h-fit p-8 mx-6 ">
@@ -44,7 +44,9 @@ function Main() {
             <br />
             Login as:
           </p>
+
           <input
+            required
             type="Email"
             placeholder=" Email ID "
             id="Email"
@@ -53,6 +55,8 @@ function Main() {
             className="w-[90%] p-3 my-3 bg-[#F4F4F4] rounded-2xl hover:scale-105 transition-all duration-500"
           />
           <input
+            minLength={6}
+            required
             type="password"
             onChange={(e) => setPassword(e.target.value)}
             placeholder=" Password "
@@ -68,13 +72,24 @@ function Main() {
             Forgot Password ?
           </a>
           <br />
-          <button
-            onClick={signUp}
-            className="mt-6 bg-[#DC3D3A] hover:border-2 hover:border-[#dc3d3a] hover:bg-[#f6cdcc] hover:text-[#4b4b4b] transition-all duration-300 text-white p-3 w-[90%] rounded-lg"
-          >
-            {" "}
-            Login{" "}
-          </button>
+          {email.length * password.length != 0 && (
+            <button
+              onClick={signUp}
+              className="mt-6 bg-[#DC3D3A] hover:border-2 hover:border-[#dc3d3a] hover:bg-[#f6cdcc] hover:text-[#4b4b4b] transition-all duration-300 text-white p-3 w-[90%] rounded-lg"
+            >
+              {" "}
+              Login{" "}
+            </button>
+          )}
+          {email.length * password.length == 0 && (
+            <button
+              onClick={signUp}
+              className="mt-6 bg-[#f6cdcc] transition-all duration-300 text-white p-3 w-[90%] rounded-lg"
+            >
+              {" "}
+              Login{" "}
+            </button>
+          )}
         </div>
       </div>
     </div>

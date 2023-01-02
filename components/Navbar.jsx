@@ -12,7 +12,7 @@ export default function Navbar() {
       <Link href={"/user"}>
         {" "}
         <img
-          src="./public/logo.png"
+          href="../public/logo.png"
           alt="National Institute of Enginerring "
         />{" "}
       </Link>

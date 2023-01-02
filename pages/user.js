@@ -5,7 +5,7 @@ import { useAuthState } from "react-firebase-hooks/auth";
 import { auth } from "../utils/firebase";
 import { useRouter } from "next/router";
 import { DominoSpinner } from "react-spinners-kit";
-
+import Requests from "../components/requests";
 export default function user() {
   const [user, loading] = useAuthState(auth);
   const route = useRouter();
@@ -20,7 +20,8 @@ export default function user() {
     return (
       <div>
         <Navbar />
-        <Dashboard />
+        {user.email.match("baasu.kondeti@gmail.com") && <Requests />}
+        {!user.email.match("baasu.kondeti@gmail.com") && <Dashboard />}
       </div>
     );
 }

@@ -11,6 +11,8 @@
   "dependencies": {
     "@next/font": "13.0.7",
     "firebase": "^9.15.0",
+    "mdb-react-ui-kit": "^5.1.0",
+    "mdb-ui-kit": "^6.0.1",
     "next": "13.0.7",
     "react": "18.2.0",
     "react-dom": "18.2.0",
@@ -18,7 +20,9 @@
     "react-icons": "^4.7.1",
     "react-loader-spinner": "^5.3.4",
     "react-router-dom": "^6.6.1",
-    "react-spinners-kit": "^1.9.1"
+    "react-spinners-kit": "^1.9.1",
+    "react-toastify": "^9.1.1",
+    "tw-elements": "^1.0.0-alpha13"
   },
   "devDependencies": {
     "autoprefixer": "^10.4.13",
