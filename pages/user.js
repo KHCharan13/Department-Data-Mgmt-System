@@ -18,10 +18,12 @@ export default function user() {
   if (!user) route.push("/");
   if (user)
     return (
-      <div>
+      <div className="w-screen">
         <Navbar />
-        {user.email.match("baasu.kondeti@gmail.com") && <Requests />}
-        {!user.email.match("baasu.kondeti@gmail.com") && <Dashboard />}
+        <div className="">
+          {user.email.match("baasu.kondeti@gmail.com") && <Requests />}
+          {!user.email.match("baasu.kondeti@gmail.com") && <Dashboard />}
+        </div>
       </div>
     );
 }
