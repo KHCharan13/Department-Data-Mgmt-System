@@ -73,6 +73,7 @@ function Dashboard() {
 
   useEffect(() => {
     getUsers();
+    console.log(user);
   }, []);
 
   const addnew = () => {
