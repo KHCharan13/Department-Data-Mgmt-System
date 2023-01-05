@@ -182,17 +182,27 @@ function Dashboard() {
         <div>
           <div className="fixed inset-0 bg-black bg-opacity-25 backdrop-blur-sm flex justify-center items-center font-poppins">
             <div className="flex flex-col">
-              <button
-                className=" text-white text-2xl place-self-end"
-                onClick={() => setModal(false)}
-              >
-                x
-              </button>
-              <div className=" bg-white rounded-3xl px-14 py-12 flex justify-center">
+              <div className=" bg-white rounded-3xl px-14 py-12">
+                <div className="flex justify-between">
+                  <div></div>
+                  <div>
+                    <button
+                      className="text-2xl"
+                      onClick={() => setModal(false)}
+                    >
+                      x
+                    </button>
+                  </div>
+                </div>
+
                 <div className="">
                   <h1 className="text-3xl font-bold flex justify-center mb-10">
                     Add New Documents
                   </h1>
+                  <h1 className="text-[#4b4b4b]">
+                    Fill the details before uploading the file
+                  </h1>
+                  <br />
                   {/* 0 is the index of the image used ref video link https://www.youtube.com/watch?v=YOAeBSCkArA */}
                   <label className="mt-3" htmlFor="Name">
                     Document Name
@@ -239,12 +249,28 @@ function Dashboard() {
                   />
                   <br />
                   <div>
-                    <button
-                      onClick={() => addnew()}
-                      className="bg-amber-300 w-full rounded-lg  hover:bg-amber-500 hover:text-white   px-3 py-2"
-                    >
-                      UPLOAD
-                    </button>
+                    {filename.length *
+                      filetype.length *
+                      filedescription.length ==
+                      0 && (
+                      <div className=" flex text-rose-500 justify-center">
+                        All the feilds are not filled
+                      </div>
+                    )}
+
+                    {filename.length *
+                      filetype.length *
+                      filedescription.length !=
+                      0 && (
+                      <div>
+                        <button
+                          onClick={() => addnew()}
+                          className="bg-amber-300 w-full rounded-lg  hover:bg-amber-500 hover:text-white   px-3 py-2"
+                        >
+                          UPLOAD
+                        </button>
+                      </div>
+                    )}
                   </div>
                 </div>
               </div>
