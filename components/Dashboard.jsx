@@ -1,5 +1,4 @@
 import React, { useState, useEffect, Fragment } from "react";
-import "tw-elements";
 import { useAuthState } from "react-firebase-hooks/auth";
 import { auth, db } from "../utils/firebase";
 import { storage } from "../utils/firebase";
