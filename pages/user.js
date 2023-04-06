@@ -5,10 +5,22 @@ import { useAuthState } from "react-firebase-hooks/auth";
 import { auth } from "../utils/firebase";
 import { useRouter } from "next/router";
 import { DominoSpinner } from "react-spinners-kit";
+import Admin from "../components/Admin";
 import Requests from "../components/requests";
+import Image from "next/image";
+import { sendEmailVerification } from "firebase/auth";
+import { async } from "@firebase/util";
+
 export default function user() {
   const [user, loading] = useAuthState(auth);
   const route = useRouter();
+
+  const sendVerif = async () => {
+    sendEmailVerification(auth.currentUser).then(() => {
+      console.log("Email Sent");
+    });
+  };
+
   if (loading)
     return (
       <div className="flex justify-center mt-[35vh]">
@@ -17,13 +29,44 @@ export default function user() {
     );
   if (!user) route.push("/");
   if (user)
-    return (
-      <div className="w-screen">
-        <Navbar />
-        <div className="">
-          {user.email.match("baasu.kondeti@gmail.com") && <Requests />}
-          {!user.email.match("baasu.kondeti@gmail.com") && <Dashboard />}
+    if (user.emailVerified)
+      return (
+        <div>
+          <Navbar />
+          <div className="">
+            {user.email.match("baasu.kondeti@gmail.com") && <Admin />}
+            {!user.email.match("baasu.kondeti@gmail.com") && <Dashboard />}
+          </div>
         </div>
-      </div>
-    );
+      );
+    else
+      return (
+        <div className=" mt-40 ">
+          <div className="m-14 flex justify-center items-center ">
+            <Image src="/OIP.png" width={200} height={200} alt="error" />
+          </div>
+          <div className="m-14 flex justify-center items-center text-center">
+            The Account is not verified please check your mail to verify the
+            account before trying again
+            <br />
+            If not found in the inbox please check your Spam or press the button
+            below to resend the mail
+            <br />
+          </div>
+          <div>
+            <b className=" flex justify-center items-center ">
+              Email = {user.email}
+            </b>
+            <br />
+            <div className="flex justify-center items-center">
+              <button
+                className="mt-10 bg-amber-300 w-fit px-5 py-3 rounded-lg hover:bg-amber-500 hover:text-white "
+                onClick={() => sendVerif()}
+              >
+                Send Verification
+              </button>
+            </div>
+          </div>
+        </div>
+      );
 }

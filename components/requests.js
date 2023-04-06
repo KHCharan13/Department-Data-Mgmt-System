@@ -2,6 +2,7 @@ import React from "react";
 import Req from "./req";
 import { useEffect, useState } from "react";
 import { auth, db } from "../utils/firebase";
+
 import {
   addDoc,
   collection,
@@ -19,6 +20,7 @@ import {
 import { useRouter } from "next/router";
 import { useAuthState } from "react-firebase-hooks/auth";
 import { async } from "@firebase/util";
+import user from "../pages/user";
 
 function Requests() {
   const [allreq, setAllreq] = useState([]);
@@ -36,6 +38,7 @@ function Requests() {
     });
     return snap;
   };
+
   useEffect(() => {
     getReqs();
   }, []);
@@ -58,6 +61,7 @@ function Requests() {
     const docRef = doc(db, "requests", post.id);
     await deleteDoc(docRef);
   };
+  //
 
   // create user button
   const newUser = async (post) => {
@@ -87,7 +91,7 @@ function Requests() {
 
   return (
     <div className="lg:mx-52 my-12 text-lg font-poppins ">
-      <h2 className=" text-3xl font-bold text-center ">
+      <h2 className="mt-12 text-3xl font-bold text-center ">
         See all the requests below
       </h2>
       {allreq.map((post) => (

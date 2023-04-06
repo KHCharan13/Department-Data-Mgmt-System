@@ -17,6 +17,8 @@ import {
   setDoc,
 } from "firebase/firestore";
 import Req from "./req";
+import Image from "next/image";
+import axios from "axios";
 
 function Dashboard() {
   const [user, loading] = useAuthState(auth);
@@ -76,13 +78,40 @@ function Dashboard() {
     console.log(user);
   }, []);
 
+  const uploadFile = (fileUp) => {
+    let data = new FormData();
+    data.append("file", fileUp);
+    const options = {
+      onUploadProgress: (progressEvent) => {
+        const { loaded, total } = progressEvent;
+        let percentage = Math.floor((loaded * 100) / total);
+        console.log(`${loaded}kb of ${total}kb | ${percentage}%`);
+      },
+    };
+    axios
+      .post(
+        "https://run.mocky.io/v3/5d9135d9-c0d1-425b-8791-ce40fc799019",
+        data,
+        options
+      )
+      .then((res) => {
+        console.log(res);
+      });
+  };
+
   const addnew = () => {
     a = userDetails;
     if (fileUpload == null) return;
     const fileRef = ref(storage, `${a[0].type}/${a[0].uid}/${filename}`);
-    uploadBytes(fileRef, fileUpload, metadata).then(() => {
-      alert("File uploaded");
-    });
+    uploadBytes(fileRef, fileUpload, metadata)
+      .then(() => {
+        alert("File uploaded");
+      })
+      .catch((error) => {
+        alert("file aldready exists/ File not uploaded", error);
+      });
+    viewItems();
+    setModal(false);
   };
 
   return (
@@ -92,8 +121,13 @@ function Dashboard() {
           <h1 className="flex justify-center py-10 font-bold text-5xl">
             Welcome!
           </h1>
-          <div className="flex justify-center items ">
-            <h1 className="h-40 w-40 bg-white rounded-full"></h1>
+          <div className="flex justify-center items-center mix-blend-multiply">
+            <Image
+              src="/avatar-scaled.jpeg"
+              width={300}
+              height={300}
+              alt="Profile Avatar"
+            />
           </div>
           <div className="flex justify-center">
             {userDetails.map((items) => (
@@ -243,7 +277,10 @@ function Dashboard() {
                   <br />
                   <input
                     className="p-3"
-                    onChange={(e) => setfileUpload(e.target.files[0])}
+                    onChange={(e) => (
+                      setfileUpload(e.target.files[0]),
+                      uploadFile(e.target.files[0])
+                    )}
                     type="file"
                     id="file"
                   />
