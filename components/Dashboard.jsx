@@ -19,6 +19,7 @@ import {
 import Req from "./req";
 import Image from "next/image";
 import axios from "axios";
+import { Progress } from "@material-tailwind/react";
 
 function Dashboard() {
   const [user, loading] = useAuthState(auth);
@@ -28,6 +29,7 @@ function Dashboard() {
   const [userDetails, setDetails] = useState([]);
   const [tablevis, setTableVis] = useState(false);
   const [modal, setModal] = useState(false);
+  const [perc, setperc] = useState(0);
   if (user == null) {
     return;
   }
@@ -75,28 +77,25 @@ function Dashboard() {
 
   useEffect(() => {
     getUsers();
-    console.log(user);
   }, []);
 
   const uploadFile = (fileUp) => {
     let data = new FormData();
     data.append("file", fileUp);
+    const bar = document.getElementById("Progressbar");
     const options = {
       onUploadProgress: (progressEvent) => {
         const { loaded, total } = progressEvent;
-        let percentage = Math.floor((loaded * 100) / total);
-        console.log(`${loaded}kb of ${total}kb | ${percentage}%`);
+        const percentage = Math.floor((loaded * 100) / total);
+        bar.setAttribute("value", percentage);
+        bar.previousElementSibling.textContent = `${percentage}%`;
+
+        if (percentage === 100) {
+          bar.previousElementSibling.textContent = "Upload Complete";
+        }
       },
     };
-    axios
-      .post(
-        "https://run.mocky.io/v3/5d9135d9-c0d1-425b-8791-ce40fc799019",
-        data,
-        options
-      )
-      .then((res) => {
-        console.log(res);
-      });
+    axios.post("https://httpbin.org/post", data, options).then((res) => {});
   };
 
   const addnew = () => {
@@ -150,6 +149,11 @@ function Dashboard() {
                 Add new Documents
               </button>
             </div>
+          </div>
+          <div className="flex justify-center items-center">
+            {Boolean(Boolean(docList.length) ^ tablevis.valueOf()) == true && (
+              <div>No Files Uploaded</div>
+            )}
           </div>
           <div className="p-10 flex justify-center items-center">
             {tablevis.valueOf() == false && <div></div>}
@@ -208,6 +212,7 @@ function Dashboard() {
                 })}
               </table>
             )}
+            <br />
           </div>
         </div>
       </div>
@@ -285,6 +290,17 @@ function Dashboard() {
                     id="file"
                   />
                   <br />
+                  <div>
+                    <label className="text-center" htmlFor="Progressbar">
+                      0%
+                    </label>
+                    <progress
+                      className=" w-full rounded-full bg-blue-gray-100 "
+                      id="Progressbar"
+                      value="0"
+                      max="100"
+                    ></progress>
+                  </div>
                   <div>
                     {filename.length *
                       filetype.length *

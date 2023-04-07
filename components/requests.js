@@ -78,11 +78,7 @@ function Requests() {
           displayName: dispName,
         });
         auth.signOut();
-        signInWithEmailAndPassword(
-          auth,
-          "baasu.kondeti@gmail.com",
-          "admin@niecs"
-        );
+        signInWithEmailAndPassword(auth, "baasu.kondeti@gmail.com", "12345678");
       })
       .catch((error) => {
         alert(error);

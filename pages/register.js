@@ -3,7 +3,7 @@ import { useRouter } from "next/router";
 import React, { useState } from "react";
 import { DominoSpinner } from "react-spinners-kit";
 import { db } from "../utils/firebase";
-export default function register() {
+export default function Register() {
   const router = useRouter();
   const [name, setName] = useState("");
   const [uid, setUID] = useState("");
@@ -59,9 +59,9 @@ export default function register() {
               onChange={(e) => setType(e.target.value)}
             >
               <option value="null"></option>
-              <option value="teacher">Teaching Staff</option>
-              <option value="student">Student</option>
-              <option value="nonteaching">Non Teaching Staff</option>
+              <option value="Teacher">Teacher</option>
+              <option value="Student">Student</option>
+              <option value="Non-Teaching Staff">Non Teaching Staff</option>
             </select>
             <label htmlFor="Email">Enter College email :</label>
             <input
@@ -101,7 +101,7 @@ export default function register() {
               className="w-full p-3 my-3 bg-[#F4F4F4] rounded-2xl hover:scale-105 transition-all duration-500"
             />
             <button
-              onClick={createRequest}
+              onClick={() => createRequest()}
               type="submit"
               className="mt-6 bg-[#DC3D3A] hover:border-2 hover:border-[#dc3d3a] hover:bg-[#f6cdcc] hover:text-[#4b4b4b] transition-all duration-300 text-white p-3 w-full rounded-lg"
             >
