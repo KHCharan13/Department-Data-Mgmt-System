@@ -17,7 +17,7 @@ export default function user() {
 
   const sendVerif = async () => {
     sendEmailVerification(auth.currentUser).then(() => {
-      console.log("Email Sent");
+      alert("Email Sent");
     });
   };
 
@@ -60,10 +60,16 @@ export default function user() {
             <br />
             <div className="flex justify-center items-center">
               <button
-                className="mt-10 bg-amber-300 w-fit px-5 py-3 rounded-lg hover:bg-amber-500 hover:text-white "
+                className="mt-10 mx-4 bg-amber-300 w-fit px-5 py-3 rounded-lg hover:bg-amber-500 hover:text-white "
                 onClick={() => sendVerif()}
               >
                 Send Verification
+              </button>
+              <button
+                className="mt-10 mx-4 bg-amber-300 w-fit px-5 py-3 rounded-lg hover:bg-amber-500 hover:text-white "
+                onClick={() => auth.signOut()}
+              >
+                Back to Login/Exit
               </button>
             </div>
           </div>

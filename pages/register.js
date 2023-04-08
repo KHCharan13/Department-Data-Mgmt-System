@@ -59,8 +59,8 @@ export default function Register() {
               onChange={(e) => setType(e.target.value)}
             >
               <option value="null"></option>
-              <option value="Teacher">Teacher</option>
-              <option value="Student">Student</option>
+              <option value="teacher">Teacher</option>
+              <option value="student">Student</option>
               <option value="Non-Teaching Staff">Non Teaching Staff</option>
             </select>
             <label htmlFor="Email">Enter College email :</label>

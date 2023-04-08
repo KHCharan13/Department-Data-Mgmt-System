@@ -31,7 +31,7 @@ function ManageUsers() {
 
   const getData = async () => {
     const reqRef = collection(db, "users");
-    const q = query(reqRef, where("type", "==", "Student"));
+    const q = query(reqRef, where("type", "==", "student"));
     const snap = onSnapshot(q, (snapshot) => {
       console.log("inside snap");
       setStud(
@@ -45,7 +45,7 @@ function ManageUsers() {
   };
   const getData1 = async () => {
     const reqRef = collection(db, "users");
-    const q = query(reqRef, where("type", "==", "Teacher"));
+    const q = query(reqRef, where("type", "==", "teacher"));
     const snap1 = onSnapshot(q, (snapshot) => {
       console.log("inside snap1");
       setTeach(
