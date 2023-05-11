@@ -6,16 +6,18 @@ export default function Req({ children, email, uid, name, type }) {
       <div>
         <div className="flex">
           <h1 className="font-bold mr-4">Name : </h1>
-          {name}
+          <h1 id="name">{name}</h1>
         </div>
         <div className="flex">
-          <h1 className="font-bold mr-4">Email : </h1> {email}
+          <h1 className="font-bold mr-4">Email : </h1>{" "}
+          <h1 id="email">{email}</h1>
         </div>
         <div className="flex">
-          <h1 className="font-bold mr-4">Id : </h1> {uid}
+          <h1 className="font-bold mr-4">Id : </h1> <h1 id="uid">{uid}</h1>
         </div>
         <div className="flex">
-          <h1 className="font-bold mr-4">Type of user:</h1> {type}
+          <h1 className="font-bold mr-4">Type of user:</h1>{" "}
+          <h1 id="type">{type}</h1>
         </div>
       </div>
       {children}

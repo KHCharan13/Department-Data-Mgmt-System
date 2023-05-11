@@ -9,6 +9,8 @@ import {
   getDownloadURL,
   getMetadata,
 } from "firebase/storage";
+import { Dropdown, Collapse, Text } from "@nextui-org/react";
+
 import {
   collection,
   query,
@@ -58,7 +60,6 @@ function Dashboard() {
   };
 
   const viewItems = () => {
-    setTableVis(true);
     a = userDetails;
     setDocList([]);
     setMetaList([]);
@@ -80,22 +81,39 @@ function Dashboard() {
   }, []);
 
   const uploadFile = (fileUp) => {
-    let data = new FormData();
-    data.append("file", fileUp);
-    const bar = document.getElementById("Progressbar");
-    const options = {
-      onUploadProgress: (progressEvent) => {
-        const { loaded, total } = progressEvent;
-        const percentage = Math.floor((loaded * 100) / total);
-        bar.setAttribute("value", percentage);
-        bar.previousElementSibling.textContent = `${percentage}%`;
+    if (
+      fileUp.type == "image/jpeg" ||
+      fileUp.type == "image/png" ||
+      fileUp.type == "application/pdf"
+    ) {
+      if (fileUp.size <= 2097152) {
+        let data = new FormData();
+        data.append("file", fileUp);
+        const bar = document.getElementById("Progressbar");
+        const options = {
+          onUploadProgress: (progressEvent) => {
+            const { loaded, total } = progressEvent;
 
-        if (percentage === 100) {
-          bar.previousElementSibling.textContent = "Upload Complete";
-        }
-      },
-    };
-    axios.post("https://httpbin.org/post", data, options).then((res) => {});
+            const percentage = Math.floor((loaded * 100) / total);
+            bar.setAttribute("value", percentage);
+            bar.previousElementSibling.textContent = `${percentage}%`;
+
+            if (percentage === 100) {
+              bar.previousElementSibling.textContent = "Upload Complete";
+            }
+          },
+        };
+        axios.post("https://httpbin.org/post", data, options).then((res) => {});
+      } else {
+        document.getElementById("file").value = "";
+        alert(
+          "File size is greater than 2 MB please upload a compressed version"
+        );
+      }
+    } else {
+      document.getElementById("file").value = "";
+      alert("please upload only JPG,JPEG or PDF");
+    }
   };
 
   const addnew = () => {
@@ -150,6 +168,348 @@ function Dashboard() {
               </button>
             </div>
           </div>
+
+          {user.email.includes("4ni") && (
+            <div>
+              {" "}
+              <Collapse.Group accordion={false}>
+                <Collapse
+                  onClick={() => {
+                    viewItems();
+                  }}
+                  title="Activity Points"
+                >
+                  <Text>
+                    {metaList.map((items) => {
+                      {
+                        return (
+                          <div>
+                            {items.customMetadata.filetype.match(
+                              "activitypoints"
+                            ) && (
+                              <div>
+                                <table className="w-full rounded-3xl bg-white ">
+                                  <tr className="border-b-4">
+                                    <th
+                                      scope="col"
+                                      className="font-bold text-gray-900 px-6 py-4 text-left"
+                                    >
+                                      File Name
+                                    </th>
+                                    <th
+                                      scope="col"
+                                      className=" font-bold text-gray-900 px-6 py-4 text-left"
+                                    >
+                                      File Type
+                                    </th>
+                                    <th
+                                      scope="col"
+                                      className=" font-bold text-gray-900 px-6 py-4 text-left"
+                                    >
+                                      File Description
+                                    </th>
+                                    <th
+                                      scope="col"
+                                      className="font-bold text-gray-900 px-6 py-4 text-left"
+                                    >
+                                      Links
+                                    </th>
+                                  </tr>
+
+                                  <tr>
+                                    <td className="  px-6 py-4 text-left">
+                                      {items.customMetadata.filename}
+                                    </td>
+
+                                    <td className="   px-6 py-4 text-left">
+                                      {items.customMetadata.filetype}
+                                    </td>
+                                    <td className=" px-6 py-4 text-left">
+                                      {items.customMetadata.filedescription}
+                                    </td>
+                                    <td className=" font-bold px-6 py-4 text-left">
+                                      <a
+                                        className="hover:underline text-blue-400 "
+                                        href={docList[metaList.indexOf(items)]}
+                                      >
+                                        Click here to view
+                                      </a>
+                                    </td>
+                                  </tr>
+                                </table>
+                              </div>
+                            )}
+                          </div>
+                        );
+                      }
+                    })}
+                  </Text>
+                </Collapse>
+                <Collapse title="Project Documents">
+                  <Text>
+                    {metaList.map((items) => {
+                      {
+                        return (
+                          <div>
+                            {items.customMetadata.filetype.match(
+                              "projects"
+                            ) && (
+                              <div>
+                                <table className="w-full rounded-3xl bg-white ">
+                                  <tr className="border-b-4">
+                                    <th
+                                      scope="col"
+                                      className="font-bold text-gray-900 px-6 py-4 text-left"
+                                    >
+                                      File Name
+                                    </th>
+                                    <th
+                                      scope="col"
+                                      className=" font-bold text-gray-900 px-6 py-4 text-left"
+                                    >
+                                      File Type
+                                    </th>
+                                    <th
+                                      scope="col"
+                                      className=" font-bold text-gray-900 px-6 py-4 text-left"
+                                    >
+                                      File Description
+                                    </th>
+                                    <th
+                                      scope="col"
+                                      className="font-bold text-gray-900 px-6 py-4 text-left"
+                                    >
+                                      Links
+                                    </th>
+                                  </tr>
+
+                                  <tr>
+                                    <td className="  px-6 py-4 text-left">
+                                      {items.customMetadata.filename}
+                                    </td>
+
+                                    <td className="   px-6 py-4 text-left">
+                                      {items.customMetadata.filetype}
+                                    </td>
+                                    <td className=" px-6 py-4 text-left">
+                                      {items.customMetadata.filedescription}
+                                    </td>
+                                    <td className=" font-bold px-6 py-4 text-left">
+                                      <a
+                                        className="hover:underline text-blue-400 "
+                                        href={docList[metaList.indexOf(items)]}
+                                      >
+                                        Click here to view
+                                      </a>
+                                    </td>
+                                  </tr>
+                                </table>
+                              </div>
+                            )}
+                          </div>
+                        );
+                      }
+                    })}
+                  </Text>
+                </Collapse>
+                <Collapse title="Seminars">
+                  <Text>
+                    {metaList.map((items) => {
+                      {
+                        return (
+                          <div>
+                            {items.customMetadata.filetype.match("seminar") && (
+                              <div>
+                                <table className="w-full rounded-3xl bg-white ">
+                                  <tr className="border-b-4">
+                                    <th
+                                      scope="col"
+                                      className="font-bold text-gray-900 px-6 py-4 text-left"
+                                    >
+                                      File Name
+                                    </th>
+                                    <th
+                                      scope="col"
+                                      className=" font-bold text-gray-900 px-6 py-4 text-left"
+                                    >
+                                      File Type
+                                    </th>
+                                    <th
+                                      scope="col"
+                                      className=" font-bold text-gray-900 px-6 py-4 text-left"
+                                    >
+                                      File Description
+                                    </th>
+                                    <th
+                                      scope="col"
+                                      className="font-bold text-gray-900 px-6 py-4 text-left"
+                                    >
+                                      Links
+                                    </th>
+                                  </tr>
+
+                                  <tr>
+                                    <td className="  px-6 py-4 text-left">
+                                      {items.customMetadata.filename}
+                                    </td>
+
+                                    <td className="   px-6 py-4 text-left">
+                                      {items.customMetadata.filetype}
+                                    </td>
+                                    <td className=" px-6 py-4 text-left">
+                                      {items.customMetadata.filedescription}
+                                    </td>
+                                    <td className=" font-bold px-6 py-4 text-left">
+                                      <a
+                                        className="hover:underline text-blue-400 "
+                                        href={docList[metaList.indexOf(items)]}
+                                      >
+                                        Click here to view
+                                      </a>
+                                    </td>
+                                  </tr>
+                                </table>
+                              </div>
+                            )}
+                          </div>
+                        );
+                      }
+                    })}
+                  </Text>
+                </Collapse>
+                <Collapse title="Resume">
+                  <Text>
+                    {metaList.map((items) => {
+                      {
+                        return (
+                          <div>
+                            {items.customMetadata.filetype.match("resume") && (
+                              <div>
+                                <table className="w-full rounded-3xl bg-white ">
+                                  <tr className="border-b-4">
+                                    <th
+                                      scope="col"
+                                      className="font-bold text-gray-900 px-6 py-4 text-left"
+                                    >
+                                      File Name
+                                    </th>
+                                    <th
+                                      scope="col"
+                                      className=" font-bold text-gray-900 px-6 py-4 text-left"
+                                    >
+                                      File Type
+                                    </th>
+                                    <th
+                                      scope="col"
+                                      className=" font-bold text-gray-900 px-6 py-4 text-left"
+                                    >
+                                      File Description
+                                    </th>
+                                    <th
+                                      scope="col"
+                                      className="font-bold text-gray-900 px-6 py-4 text-left"
+                                    >
+                                      Links
+                                    </th>
+                                  </tr>
+
+                                  <tr>
+                                    <td className="  px-6 py-4 text-left">
+                                      {items.customMetadata.filename}
+                                    </td>
+
+                                    <td className="   px-6 py-4 text-left">
+                                      {items.customMetadata.filetype}
+                                    </td>
+                                    <td className=" px-6 py-4 text-left">
+                                      {items.customMetadata.filedescription}
+                                    </td>
+                                    <td className=" font-bold px-6 py-4 text-left">
+                                      <a
+                                        className="hover:underline text-blue-400 "
+                                        href={docList[metaList.indexOf(items)]}
+                                      >
+                                        Click here to view
+                                      </a>
+                                    </td>
+                                  </tr>
+                                </table>
+                              </div>
+                            )}
+                          </div>
+                        );
+                      }
+                    })}
+                  </Text>
+                </Collapse>
+                <Collapse title="Other Documents">
+                  <Text>
+                    {metaList.map((items) => {
+                      {
+                        return (
+                          <div>
+                            {items.customMetadata.filetype.match("others") && (
+                              <div>
+                                <table className="w-full rounded-3xl bg-white ">
+                                  <tr className="border-b-4">
+                                    <th
+                                      scope="col"
+                                      className="font-bold text-gray-900 px-6 py-4 text-left"
+                                    >
+                                      File Name
+                                    </th>
+                                    <th
+                                      scope="col"
+                                      className=" font-bold text-gray-900 px-6 py-4 text-left"
+                                    >
+                                      File Type
+                                    </th>
+                                    <th
+                                      scope="col"
+                                      className=" font-bold text-gray-900 px-6 py-4 text-left"
+                                    >
+                                      File Description
+                                    </th>
+                                    <th
+                                      scope="col"
+                                      className="font-bold text-gray-900 px-6 py-4 text-left"
+                                    >
+                                      Links
+                                    </th>
+                                  </tr>
+
+                                  <tr>
+                                    <td className="  px-6 py-4 text-left">
+                                      {items.customMetadata.filename}
+                                    </td>
+
+                                    <td className="   px-6 py-4 text-left">
+                                      {items.customMetadata.filetype}
+                                    </td>
+                                    <td className=" px-6 py-4 text-left">
+                                      {items.customMetadata.filedescription}
+                                    </td>
+                                    <td className=" font-bold px-6 py-4 text-left">
+                                      <a
+                                        className="hover:underline text-blue-400 "
+                                        href={docList[metaList.indexOf(items)]}
+                                      >
+                                        Click here to view
+                                      </a>
+                                    </td>
+                                  </tr>
+                                </table>
+                              </div>
+                            )}
+                          </div>
+                        );
+                      }
+                    })}
+                  </Text>
+                </Collapse>
+              </Collapse.Group>
+            </div>
+          )}
           <div className="flex justify-center items-center">
             {Boolean(Boolean(docList.length) ^ tablevis.valueOf()) == true && (
               <div>No Files Uploaded</div>
@@ -255,7 +615,35 @@ function Dashboard() {
                     placeholder="Name of Document"
                   />{" "}
                   <br />
-                  <label className="mt-3" htmlFor="Type">
+                  <div class="flex items-center justify-evenly">
+                    <h1>Type of File</h1>
+                    <Dropdown>
+                      <Dropdown.Button id="asd" flat>
+                        Type of File
+                      </Dropdown.Button>
+                      <Dropdown.Menu
+                        onAction={(key) => {
+                          console.log(key);
+                          document.getElementById("asd").textContent = key;
+                          setFileType(key);
+                        }}
+                        aria-label="Static Actions"
+                      >
+                        <Dropdown.Item key="activitypoints">
+                          Activity Points
+                        </Dropdown.Item>
+                        <Dropdown.Item key="projects">
+                          Project Documents
+                        </Dropdown.Item>
+                        <Dropdown.Item key="seminar">Seminars</Dropdown.Item>
+                        <Dropdown.Item key="resume">Resume</Dropdown.Item>
+                        <Dropdown.Item key="others" color="error">
+                          Other
+                        </Dropdown.Item>
+                      </Dropdown.Menu>
+                    </Dropdown>
+                  </div>
+                  {/* <label className="mt-3" htmlFor="Type">
                     Document Type
                   </label>
                   <br />
@@ -265,7 +653,7 @@ function Dashboard() {
                     type="text"
                     id="Type"
                     placeholder="type"
-                  />
+                  /> */}
                   <br />
                   <label className="" htmlFor="Name">
                     Document Description
@@ -287,6 +675,7 @@ function Dashboard() {
                       uploadFile(e.target.files[0])
                     )}
                     type="file"
+                    accept="image/*,.pdf"
                     id="file"
                   />
                   <br />

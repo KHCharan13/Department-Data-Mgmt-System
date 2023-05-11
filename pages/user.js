@@ -24,6 +24,7 @@ export default function user() {
   if (loading)
     return (
       <div className="flex justify-center mt-[35vh]">
+        <title>Loading</title>
         <DominoSpinner size={400} color="#000000" />;
       </div>
     );
@@ -32,6 +33,7 @@ export default function user() {
     if (user.emailVerified)
       return (
         <div>
+          <title>{user.displayName}</title>
           <Navbar />
           <div className="">
             {user.email.match("baasu.kondeti@gmail.com") && <Admin />}

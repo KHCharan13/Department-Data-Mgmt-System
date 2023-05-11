@@ -14,5 +14,5 @@ module.exports = withMT({
       },
     },
   },
-  plugins: [],
+  plugins: [require("tw-elements/dist/plugin.cjs")],
 });
