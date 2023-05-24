@@ -2,22 +2,10 @@ import React, { useState, useEffect, Fragment } from "react";
 import { useAuthState } from "react-firebase-hooks/auth";
 import { auth, db } from "../utils/firebase";
 import { storage } from "../utils/firebase";
-import {
-  ref,
-  uploadBytes,
-  listAll,
-  getDownloadURL,
-  getMetadata,
-} from "firebase/storage";
+import { ref, uploadBytes } from "firebase/storage";
 import { Dropdown, Collapse, Text } from "@nextui-org/react";
 
-import {
-  collection,
-  query,
-  onSnapshot,
-  where,
-  setDoc,
-} from "firebase/firestore";
+import { collection, query, onSnapshot, where } from "firebase/firestore";
 import Req from "./req";
 import Image from "next/image";
 import axios from "axios";
