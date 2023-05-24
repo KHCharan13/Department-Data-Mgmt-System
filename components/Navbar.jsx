@@ -7,7 +7,6 @@ import Image from "next/image";
 import { Dropdown, Input, Grid } from "@nextui-org/react";
 import { useState } from "react";
 import { collection, onSnapshot, query, where } from "firebase/firestore";
-import { Searchresult } from "./searchresult";
 
 export default function Navbar() {
   const [user, loading] = useAuthState(auth);
