@@ -78,8 +78,11 @@ function profile() {
   return (
     <div>
       <div>
-        <Navbar />
-        <div className="mx-[10%] mt-10 font-poppins bg-[#F4F4F4] rounded-3xl min-h-screen p-14">
+        <div className="fixed top-0 w-full z-100">
+          <Navbar />
+        </div>
+
+        <div className="mx-[10%] mt-[200px] font-poppins bg-[#F4F4F4] rounded-3xl min-h-screen p-14">
           <div className="flex justify-center items-center mix-blend-multiply">
             <Image
               src="/avatar-scaled.jpeg"

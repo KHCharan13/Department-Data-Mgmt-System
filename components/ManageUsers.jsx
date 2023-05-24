@@ -55,7 +55,6 @@ function ManageUsers() {
         }))
       );
     });
-    console.log(1);
     return snap1;
   };
   const a = useRouter();
@@ -70,10 +69,13 @@ function ManageUsers() {
       },
     });
   }
-
+  var num = 0;
   useEffect(() => {
-    getData();
-    getData1();
+    if (num === 0) {
+      getData();
+      getData1();
+      num = num + 1;
+    }
   }, []);
   return (
     <div className="lg:mx-52 my-12 text-lg font-poppins ">

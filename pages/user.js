@@ -34,8 +34,11 @@ export default function user() {
       return (
         <div>
           <title>{user.displayName}</title>
-          <Navbar />
-          <div className="">
+          <div className=" fixed top-0 w-full ">
+            <Navbar />
+          </div>
+
+          <div className="mt-[200px]">
             {user.email.match("baasu.kondeti@gmail.com") && <Admin />}
             {!user.email.match("baasu.kondeti@gmail.com") && <Dashboard />}
           </div>
