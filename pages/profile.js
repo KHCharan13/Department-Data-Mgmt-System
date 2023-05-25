@@ -1,4 +1,3 @@
-import { async } from "@firebase/util";
 import { collection, onSnapshot, query, where } from "firebase/firestore";
 import Navbar from "../components/Navbar";
 import { storage } from "../utils/firebase";

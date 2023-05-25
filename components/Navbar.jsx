@@ -84,38 +84,44 @@ export default function Navbar() {
 
         <div>
           <div className="flex bg-white py-2 px-3 rounded-full items-center">
-            <Dropdown>
-              <Dropdown.Button bordered rounded id="asd" flat>
-                Type of user
-              </Dropdown.Button>
+            {user != null && (
+              <div>
+                {" "}
+                <Dropdown>
+                  <Dropdown.Button bordered rounded id="asd" flat>
+                    Type of user
+                  </Dropdown.Button>
 
-              {user.email.includes("4ni") && (
-                <Dropdown.Menu
-                  onAction={(key) => {
-                    getData(key);
-                    document.getElementById("asd").textContent = key;
-                    setType(key);
-                  }}
-                  aria-label="Static Actions"
-                >
-                  <Dropdown.Item key="student">Student</Dropdown.Item>
-                </Dropdown.Menu>
-              )}
+                  {user.email.includes("4ni") && (
+                    <Dropdown.Menu
+                      onAction={(key) => {
+                        getData(key);
+                        document.getElementById("asd").textContent = key;
+                        setType(key);
+                      }}
+                      aria-label="Static Actions"
+                    >
+                      <Dropdown.Item key="student">Student</Dropdown.Item>
+                    </Dropdown.Menu>
+                  )}
 
-              {!user.email.includes("4ni") && (
-                <Dropdown.Menu
-                  onAction={(key) => {
-                    getData(key);
-                    document.getElementById("asd").textContent = key;
-                    setType(key);
-                  }}
-                  aria-label="Static Actions"
-                >
-                  <Dropdown.Item key="teacher">Teacher</Dropdown.Item>
-                  <Dropdown.Item key="student">Student</Dropdown.Item>
-                </Dropdown.Menu>
-              )}
-            </Dropdown>
+                  {!user.email.includes("4ni") && (
+                    <Dropdown.Menu
+                      onAction={(key) => {
+                        getData(key);
+                        document.getElementById("asd").textContent = key;
+                        setType(key);
+                      }}
+                      aria-label="Static Actions"
+                    >
+                      <Dropdown.Item key="teacher">Teacher</Dropdown.Item>
+                      <Dropdown.Item key="student">Student</Dropdown.Item>
+                    </Dropdown.Menu>
+                  )}
+                </Dropdown>{" "}
+              </div>
+            )}
+
             <input
               className="mx-4 p-2 w-[30vw] rounded-3xl text-center bg-blue-100 placeholder:text-blue-700"
               placeholder="Enter The Name to Search"
