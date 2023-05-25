@@ -9,7 +9,7 @@ import {
   getMetadata,
 } from "firebase/storage";
 import Router, { useRouter } from "next/router";
-
+import { Dropdown, Collapse, Text } from "@nextui-org/react";
 import React from "react";
 import { db } from "../utils/firebase";
 import { useState, useEffect } from "react";
@@ -77,11 +77,11 @@ function profile() {
   return (
     <div>
       <div>
-        <div className="fixed top-0 w-full z-100">
+        <div className="fixed top-0 w-full z-40">
           <Navbar />
         </div>
 
-        <div className="mx-[10%] mt-[200px] font-poppins bg-[#F4F4F4] rounded-3xl min-h-screen p-14">
+        <div className=" mx-[10%] mt-[200px] font-poppins bg-[#F4F4F4] rounded-3xl min-h-screen p-14">
           <div className="flex justify-center items-center mix-blend-multiply">
             <Image
               src="/avatar-scaled.jpeg"
@@ -113,6 +113,7 @@ function profile() {
               Documents of {name}
             </h1>
             <div className="flex gap-8 justify-center ">
+              {a != null && <div>hari </div>}
               <button
                 className="mt-10 bg-amber-300 w-fit px-5 py-3 rounded-lg hover:bg-amber-500 hover:text-white "
                 onClick={() => viewItems()}
@@ -136,59 +137,750 @@ function profile() {
           <div className="p-10 flex justify-center items-center">
             {tablevis.valueOf() == false && <div></div>}
             {tablevis.valueOf() == true && (
-              <table className="w-full rounded-3xl bg-white ">
-                <tr className="border-b-4">
-                  <th
-                    scope="col"
-                    className="font-bold text-gray-900 px-6 py-4 text-left"
-                  >
-                    File Name
-                  </th>
-                  <th
-                    scope="col"
-                    className=" font-bold text-gray-900 px-6 py-4 text-left"
-                  >
-                    File Type
-                  </th>
-                  <th
-                    scope="col"
-                    className=" font-bold text-gray-900 px-6 py-4 text-left"
-                  >
-                    File Description
-                  </th>
-                  <th
-                    scope="col"
-                    className="font-bold text-gray-900 px-6 py-4 text-left"
-                  >
-                    Links
-                  </th>
-                </tr>
+              <div>
+                {!email.includes("4ni") && (
+                  <div>
+                    <Collapse.Group accordion={false}>
+                      <Collapse title="Journals">
+                        <Text>
+                          <table className="w-full rounded-3xl bg-white ">
+                            <tr className="border-b-4">
+                              <th
+                                scope="col"
+                                className="font-bold text-gray-900 px-6 py-4 text-left"
+                              >
+                                File Name
+                              </th>
+                              <th
+                                scope="col"
+                                className=" font-bold text-gray-900 px-6 py-4 text-left"
+                              >
+                                File Type
+                              </th>
+                              <th
+                                scope="col"
+                                className=" font-bold text-gray-900 px-6 py-4 text-left"
+                              >
+                                File Description
+                              </th>
+                              <th
+                                scope="col"
+                                className="font-bold text-gray-900 px-6 py-4 text-left"
+                              >
+                                Links
+                              </th>
+                            </tr>
+                          </table>
+                          {metaList.map((items) => {
+                            {
+                              return (
+                                <div>
+                                  {items.customMetadata.filetype.match(
+                                    "journal"
+                                  ) && (
+                                    <div>
+                                      <table className="w-full rounded-3xl bg-white ">
+                                        <tr>
+                                          <td className="  px-6 py-4 text-left">
+                                            {items.customMetadata.filename}
+                                          </td>
 
-                {metaList.map((items) => {
-                  return (
-                    <tr>
-                      <td className="  px-6 py-4 text-left">
-                        {items.customMetadata.filename}
-                      </td>
+                                          <td className="   px-6 py-4 text-left">
+                                            {items.customMetadata.filetype}
+                                          </td>
+                                          <td className=" px-6 py-4 text-left">
+                                            {
+                                              items.customMetadata
+                                                .filedescription
+                                            }
+                                          </td>
+                                          <td className=" font-bold px-6 py-4 text-left">
+                                            <a
+                                              className="hover:underline text-blue-400 "
+                                              href={
+                                                docList[metaList.indexOf(items)]
+                                              }
+                                            >
+                                              Click here to view
+                                            </a>
+                                          </td>
+                                        </tr>
+                                      </table>
+                                    </div>
+                                  )}
+                                </div>
+                              );
+                            }
+                          })}
+                        </Text>
+                      </Collapse>
+                      <Collapse title="Research Papers">
+                        <Text>
+                          <table className="w-full rounded-3xl bg-white ">
+                            <tr className="border-b-4">
+                              <th
+                                scope="col"
+                                className="font-bold text-gray-900 px-6 py-4 text-left"
+                              >
+                                File Name
+                              </th>
+                              <th
+                                scope="col"
+                                className=" font-bold text-gray-900 px-6 py-4 text-left"
+                              >
+                                File Type
+                              </th>
+                              <th
+                                scope="col"
+                                className=" font-bold text-gray-900 px-6 py-4 text-left"
+                              >
+                                File Description
+                              </th>
+                              <th
+                                scope="col"
+                                className="font-bold text-gray-900 px-6 py-4 text-left"
+                              >
+                                Links
+                              </th>
+                            </tr>
+                          </table>
+                          {metaList.map((items) => {
+                            {
+                              return (
+                                <div>
+                                  {items.customMetadata.filetype.match(
+                                    "research"
+                                  ) && (
+                                    <div>
+                                      <table className="w-full rounded-3xl bg-white ">
+                                        <tr>
+                                          <td className="  px-6 py-4 text-left">
+                                            {items.customMetadata.filename}
+                                          </td>
 
-                      <td className="   px-6 py-4 text-left">
-                        {items.customMetadata.filetype}
-                      </td>
-                      <td className=" px-6 py-4 text-left">
-                        {items.customMetadata.filedescription}
-                      </td>
-                      <td className=" font-bold px-6 py-4 text-left">
-                        <a
-                          className="hover:underline text-blue-400 "
-                          href={docList[metaList.indexOf(items)]}
-                        >
-                          Click here to view
-                        </a>
-                      </td>
-                    </tr>
-                  );
-                })}
-              </table>
+                                          <td className="   px-6 py-4 text-left">
+                                            {items.customMetadata.filetype}
+                                          </td>
+                                          <td className=" px-6 py-4 text-left">
+                                            {
+                                              items.customMetadata
+                                                .filedescription
+                                            }
+                                          </td>
+                                          <td className=" font-bold px-6 py-4 text-left">
+                                            <a
+                                              className="hover:underline text-blue-400 "
+                                              href={
+                                                docList[metaList.indexOf(items)]
+                                              }
+                                            >
+                                              Click here to view
+                                            </a>
+                                          </td>
+                                        </tr>
+                                      </table>
+                                    </div>
+                                  )}
+                                </div>
+                              );
+                            }
+                          })}
+                        </Text>
+                      </Collapse>
+                      <Collapse title="Seminars">
+                        <Text>
+                          <table className="w-full rounded-3xl bg-white ">
+                            <tr className="border-b-4">
+                              <th
+                                scope="col"
+                                className="font-bold text-gray-900 px-6 py-4 text-left"
+                              >
+                                File Name
+                              </th>
+                              <th
+                                scope="col"
+                                className=" font-bold text-gray-900 px-6 py-4 text-left"
+                              >
+                                File Type
+                              </th>
+                              <th
+                                scope="col"
+                                className=" font-bold text-gray-900 px-6 py-4 text-left"
+                              >
+                                File Description
+                              </th>
+                              <th
+                                scope="col"
+                                className="font-bold text-gray-900 px-6 py-4 text-left"
+                              >
+                                Links
+                              </th>
+                            </tr>
+                          </table>
+                          {metaList.map((items) => {
+                            {
+                              return (
+                                <div>
+                                  {items.customMetadata.filetype.match(
+                                    "seminar"
+                                  ) && (
+                                    <div>
+                                      <table className="w-full rounded-3xl bg-white ">
+                                        <tr>
+                                          <td className="  px-6 py-4 text-left">
+                                            {items.customMetadata.filename}
+                                          </td>
+
+                                          <td className="   px-6 py-4 text-left">
+                                            {items.customMetadata.filetype}
+                                          </td>
+                                          <td className=" px-6 py-4 text-left">
+                                            {
+                                              items.customMetadata
+                                                .filedescription
+                                            }
+                                          </td>
+                                          <td className=" font-bold px-6 py-4 text-left">
+                                            <a
+                                              className="hover:underline text-blue-400 "
+                                              href={
+                                                docList[metaList.indexOf(items)]
+                                              }
+                                            >
+                                              Click here to view
+                                            </a>
+                                          </td>
+                                        </tr>
+                                      </table>
+                                    </div>
+                                  )}
+                                </div>
+                              );
+                            }
+                          })}
+                        </Text>
+                      </Collapse>
+                      <Collapse title="Resume">
+                        <Text>
+                          <table className="w-full rounded-3xl bg-white ">
+                            <tr className="border-b-4">
+                              <th
+                                scope="col"
+                                className="font-bold text-gray-900 px-6 py-4 text-left"
+                              >
+                                File Name
+                              </th>
+                              <th
+                                scope="col"
+                                className=" font-bold text-gray-900 px-6 py-4 text-left"
+                              >
+                                File Type
+                              </th>
+                              <th
+                                scope="col"
+                                className=" font-bold text-gray-900 px-6 py-4 text-left"
+                              >
+                                File Description
+                              </th>
+                              <th
+                                scope="col"
+                                className="font-bold text-gray-900 px-6 py-4 text-left"
+                              >
+                                Links
+                              </th>
+                            </tr>
+                          </table>
+                          {metaList.map((items) => {
+                            {
+                              return (
+                                <div>
+                                  {items.customMetadata.filetype.match(
+                                    "resume"
+                                  ) && (
+                                    <div>
+                                      <table className="w-full rounded-3xl bg-white ">
+                                        <tr>
+                                          <td className="  px-6 py-4 text-left">
+                                            {items.customMetadata.filename}
+                                          </td>
+
+                                          <td className="   px-6 py-4 text-left">
+                                            {items.customMetadata.filetype}
+                                          </td>
+                                          <td className=" px-6 py-4 text-left">
+                                            {
+                                              items.customMetadata
+                                                .filedescription
+                                            }
+                                          </td>
+                                          <td className=" font-bold px-6 py-4 text-left">
+                                            <a
+                                              className="hover:underline text-blue-400 "
+                                              href={
+                                                docList[metaList.indexOf(items)]
+                                              }
+                                            >
+                                              Click here to view
+                                            </a>
+                                          </td>
+                                        </tr>
+                                      </table>
+                                    </div>
+                                  )}
+                                </div>
+                              );
+                            }
+                          })}
+                        </Text>
+                      </Collapse>
+                      <Collapse title="Other Documents">
+                        <Text>
+                          <table className="w-full rounded-3xl bg-white ">
+                            <tr className="border-b-4">
+                              <th
+                                scope="col"
+                                className="font-bold text-gray-900 px-6 py-4 text-left"
+                              >
+                                File Name
+                              </th>
+                              <th
+                                scope="col"
+                                className=" font-bold text-gray-900 px-6 py-4 text-left"
+                              >
+                                File Type
+                              </th>
+                              <th
+                                scope="col"
+                                className=" font-bold text-gray-900 px-6 py-4 text-left"
+                              >
+                                File Description
+                              </th>
+                              <th
+                                scope="col"
+                                className="font-bold text-gray-900 px-6 py-4 text-left"
+                              >
+                                Links
+                              </th>
+                            </tr>
+                          </table>
+                          {metaList.map((items) => {
+                            {
+                              return (
+                                <div>
+                                  {items.customMetadata.filetype.match(
+                                    "others"
+                                  ) && (
+                                    <div>
+                                      <table className="w-full rounded-3xl bg-white ">
+                                        <tr>
+                                          <td className="  px-6 py-4 text-left">
+                                            {items.customMetadata.filename}
+                                          </td>
+
+                                          <td className="   px-6 py-4 text-left">
+                                            {items.customMetadata.filetype}
+                                          </td>
+                                          <td className=" px-6 py-4 text-left">
+                                            {
+                                              items.customMetadata
+                                                .filedescription
+                                            }
+                                          </td>
+                                          <td className=" font-bold px-6 py-4 text-left">
+                                            <a
+                                              className="hover:underline text-blue-400 "
+                                              href={
+                                                docList[metaList.indexOf(items)]
+                                              }
+                                            >
+                                              Click here to view
+                                            </a>
+                                          </td>
+                                        </tr>
+                                      </table>
+                                    </div>
+                                  )}
+                                </div>
+                              );
+                            }
+                          })}
+                        </Text>
+                      </Collapse>
+                    </Collapse.Group>
+                  </div>
+                )}
+                {email.includes("4ni") && (
+                  <div>
+                    <Collapse.Group accordion={false}>
+                      <Collapse title="Activity Points">
+                        <Text>
+                          <table className="w-full rounded-3xl bg-white ">
+                            <tr className="border-b-4">
+                              <th
+                                scope="col"
+                                className="font-bold text-gray-900 px-6 py-4 text-left"
+                              >
+                                File Name
+                              </th>
+                              <th
+                                scope="col"
+                                className=" font-bold text-gray-900 px-6 py-4 text-left"
+                              >
+                                File Type
+                              </th>
+                              <th
+                                scope="col"
+                                className=" font-bold text-gray-900 px-6 py-4 text-left"
+                              >
+                                File Description
+                              </th>
+                              <th
+                                scope="col"
+                                className="font-bold text-gray-900 px-6 py-4 text-left"
+                              >
+                                Links
+                              </th>
+                            </tr>
+                          </table>
+                          {metaList.map((items) => {
+                            {
+                              return (
+                                <div>
+                                  {items.customMetadata.filetype.match(
+                                    "activitypoints"
+                                  ) && (
+                                    <div>
+                                      <table className="w-full rounded-3xl bg-white ">
+                                        <tr>
+                                          <td className="  px-6 py-4 text-left">
+                                            {items.customMetadata.filename}
+                                          </td>
+
+                                          <td className="   px-6 py-4 text-left">
+                                            {items.customMetadata.filetype}
+                                          </td>
+                                          <td className=" px-6 py-4 text-left">
+                                            {
+                                              items.customMetadata
+                                                .filedescription
+                                            }
+                                          </td>
+                                          <td className=" font-bold px-6 py-4 text-left">
+                                            <a
+                                              className="hover:underline text-blue-400 "
+                                              href={
+                                                docList[metaList.indexOf(items)]
+                                              }
+                                            >
+                                              Click here to view
+                                            </a>
+                                          </td>
+                                        </tr>
+                                      </table>
+                                    </div>
+                                  )}
+                                </div>
+                              );
+                            }
+                          })}
+                        </Text>
+                      </Collapse>
+                      <Collapse title="Project Documents">
+                        <Text>
+                          <table className="w-full rounded-3xl bg-white ">
+                            <tr className="border-b-4">
+                              <th
+                                scope="col"
+                                className="font-bold text-gray-900 px-6 py-4 text-left"
+                              >
+                                File Name
+                              </th>
+                              <th
+                                scope="col"
+                                className=" font-bold text-gray-900 px-6 py-4 text-left"
+                              >
+                                File Type
+                              </th>
+                              <th
+                                scope="col"
+                                className=" font-bold text-gray-900 px-6 py-4 text-left"
+                              >
+                                File Description
+                              </th>
+                              <th
+                                scope="col"
+                                className="font-bold text-gray-900 px-6 py-4 text-left"
+                              >
+                                Links
+                              </th>
+                            </tr>
+                          </table>
+                          {metaList.map((items) => {
+                            {
+                              return (
+                                <div>
+                                  {items.customMetadata.filetype.match(
+                                    "projects"
+                                  ) && (
+                                    <div>
+                                      <table className="w-full rounded-3xl bg-white ">
+                                        <tr>
+                                          <td className="  px-6 py-4 text-left">
+                                            {items.customMetadata.filename}
+                                          </td>
+
+                                          <td className="   px-6 py-4 text-left">
+                                            {items.customMetadata.filetype}
+                                          </td>
+                                          <td className=" px-6 py-4 text-left">
+                                            {
+                                              items.customMetadata
+                                                .filedescription
+                                            }
+                                          </td>
+                                          <td className=" font-bold px-6 py-4 text-left">
+                                            <a
+                                              className="hover:underline text-blue-400 "
+                                              href={
+                                                docList[metaList.indexOf(items)]
+                                              }
+                                            >
+                                              Click here to view
+                                            </a>
+                                          </td>
+                                        </tr>
+                                      </table>
+                                    </div>
+                                  )}
+                                </div>
+                              );
+                            }
+                          })}
+                        </Text>
+                      </Collapse>
+                      <Collapse title="Seminars">
+                        <Text>
+                          <table className="w-full rounded-3xl bg-white ">
+                            <tr className="border-b-4">
+                              <th
+                                scope="col"
+                                className="font-bold text-gray-900 px-6 py-4 text-left"
+                              >
+                                File Name
+                              </th>
+                              <th
+                                scope="col"
+                                className=" font-bold text-gray-900 px-6 py-4 text-left"
+                              >
+                                File Type
+                              </th>
+                              <th
+                                scope="col"
+                                className=" font-bold text-gray-900 px-6 py-4 text-left"
+                              >
+                                File Description
+                              </th>
+                              <th
+                                scope="col"
+                                className="font-bold text-gray-900 px-6 py-4 text-left"
+                              >
+                                Links
+                              </th>
+                            </tr>
+                          </table>
+                          {metaList.map((items) => {
+                            {
+                              return (
+                                <div>
+                                  {items.customMetadata.filetype.match(
+                                    "seminar"
+                                  ) && (
+                                    <div>
+                                      <table className="w-full rounded-3xl bg-white ">
+                                        <tr>
+                                          <td className="  px-6 py-4 text-left">
+                                            {items.customMetadata.filename}
+                                          </td>
+
+                                          <td className="   px-6 py-4 text-left">
+                                            {items.customMetadata.filetype}
+                                          </td>
+                                          <td className=" px-6 py-4 text-left">
+                                            {
+                                              items.customMetadata
+                                                .filedescription
+                                            }
+                                          </td>
+                                          <td className=" font-bold px-6 py-4 text-left">
+                                            <a
+                                              className="hover:underline text-blue-400 "
+                                              href={
+                                                docList[metaList.indexOf(items)]
+                                              }
+                                            >
+                                              Click here to view
+                                            </a>
+                                          </td>
+                                        </tr>
+                                      </table>
+                                    </div>
+                                  )}
+                                </div>
+                              );
+                            }
+                          })}
+                        </Text>
+                      </Collapse>
+                      <Collapse title="Resume">
+                        <Text>
+                          <table className="w-full rounded-3xl bg-white ">
+                            <tr className="border-b-4">
+                              <th
+                                scope="col"
+                                className="font-bold text-gray-900 px-6 py-4 text-left"
+                              >
+                                File Name
+                              </th>
+                              <th
+                                scope="col"
+                                className=" font-bold text-gray-900 px-6 py-4 text-left"
+                              >
+                                File Type
+                              </th>
+                              <th
+                                scope="col"
+                                className=" font-bold text-gray-900 px-6 py-4 text-left"
+                              >
+                                File Description
+                              </th>
+                              <th
+                                scope="col"
+                                className="font-bold text-gray-900 px-6 py-4 text-left"
+                              >
+                                Links
+                              </th>
+                            </tr>
+                          </table>
+                          {metaList.map((items) => {
+                            {
+                              return (
+                                <div>
+                                  {items.customMetadata.filetype.match(
+                                    "resume"
+                                  ) && (
+                                    <div>
+                                      <table className="w-full rounded-3xl bg-white ">
+                                        <tr>
+                                          <td className="  px-6 py-4 text-left">
+                                            {items.customMetadata.filename}
+                                          </td>
+
+                                          <td className="   px-6 py-4 text-left">
+                                            {items.customMetadata.filetype}
+                                          </td>
+                                          <td className=" px-6 py-4 text-left">
+                                            {
+                                              items.customMetadata
+                                                .filedescription
+                                            }
+                                          </td>
+                                          <td className=" font-bold px-6 py-4 text-left">
+                                            <a
+                                              className="hover:underline text-blue-400 "
+                                              href={
+                                                docList[metaList.indexOf(items)]
+                                              }
+                                            >
+                                              Click here to view
+                                            </a>
+                                          </td>
+                                        </tr>
+                                      </table>
+                                    </div>
+                                  )}
+                                </div>
+                              );
+                            }
+                          })}
+                        </Text>
+                      </Collapse>
+                      <Collapse title="Other Documents">
+                        <Text>
+                          <table className="w-full rounded-3xl bg-white ">
+                            <tr className="border-b-4">
+                              <th
+                                scope="col"
+                                className="font-bold text-gray-900 px-6 py-4 text-left"
+                              >
+                                File Name
+                              </th>
+                              <th
+                                scope="col"
+                                className=" font-bold text-gray-900 px-6 py-4 text-left"
+                              >
+                                File Type
+                              </th>
+                              <th
+                                scope="col"
+                                className=" font-bold text-gray-900 px-6 py-4 text-left"
+                              >
+                                File Description
+                              </th>
+                              <th
+                                scope="col"
+                                className="font-bold text-gray-900 px-6 py-4 text-left"
+                              >
+                                Links
+                              </th>
+                            </tr>
+                          </table>
+                          {metaList.map((items) => {
+                            {
+                              return (
+                                <div>
+                                  {items.customMetadata.filetype.match(
+                                    "others"
+                                  ) && (
+                                    <div>
+                                      <table className="w-full rounded-3xl bg-white ">
+                                        <tr>
+                                          <td className="  px-6 py-4 text-left">
+                                            {items.customMetadata.filename}
+                                          </td>
+
+                                          <td className="   px-6 py-4 text-left">
+                                            {items.customMetadata.filetype}
+                                          </td>
+                                          <td className=" px-6 py-4 text-left">
+                                            {
+                                              items.customMetadata
+                                                .filedescription
+                                            }
+                                          </td>
+                                          <td className=" font-bold px-6 py-4 text-left">
+                                            <a
+                                              className="hover:underline text-blue-400 "
+                                              href={
+                                                docList[metaList.indexOf(items)]
+                                              }
+                                            >
+                                              Click here to view
+                                            </a>
+                                          </td>
+                                        </tr>
+                                      </table>
+                                    </div>
+                                  )}
+                                </div>
+                              );
+                            }
+                          })}
+                        </Text>
+                      </Collapse>
+                    </Collapse.Group>
+                  </div>
+                )}
+              </div>
             )}
             <br />
           </div>
