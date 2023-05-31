@@ -7,7 +7,7 @@ import Image from "next/image";
 import { Dropdown, Input, Grid } from "@nextui-org/react";
 import { useState } from "react";
 import { collection, onSnapshot, query, where } from "firebase/firestore";
-
+import { BiLogIn } from "react-icons/bi";
 export default function Navbar() {
   const [user, loading] = useAuthState(auth);
   const route = useRouter();
@@ -76,9 +76,9 @@ export default function Navbar() {
   }
   return (
     //
-    <div className="bg-gradient-to-b from-light-blue-600 to-cyan-300 overflow-hidden">
-      <nav className=" sm:mx-10 lg:mx-40 py-8  flex justify-between items-center font-poppins ">
-        <Link className="w-0 sm:w-auto" href={"/user"}>
+    <div className="bg-gradient-to-b from-light-blue-600 to-cyan-300">
+      <nav className=" mx-10 lg:mx-40 py-8  flex justify-between items-center font-poppins ">
+        <Link className="w-auto" href={"/user"}>
           <Image src="/logo.png" width={50} height={50} alt="NIE" />
         </Link>
 
@@ -88,7 +88,7 @@ export default function Navbar() {
               <div>
                 {" "}
                 <Dropdown>
-                  <Dropdown.Button bordered rounded id="asd" flat>
+                  <Dropdown.Button bordered rounded id="asdf" flat>
                     Type of user
                   </Dropdown.Button>
 
@@ -96,7 +96,7 @@ export default function Navbar() {
                     <Dropdown.Menu
                       onAction={(key) => {
                         getData(key);
-                        document.getElementById("asd").textContent = key;
+                        document.getElementById("asdf").textContent = key;
                         setType(key);
                       }}
                       aria-label="Static Actions"
@@ -109,7 +109,7 @@ export default function Navbar() {
                     <Dropdown.Menu
                       onAction={(key) => {
                         getData(key);
-                        document.getElementById("asd").textContent = key;
+                        document.getElementById("asdf").textContent = key;
                         setType(key);
                       }}
                       aria-label="Static Actions"
@@ -143,7 +143,7 @@ export default function Navbar() {
             <div className="fixed flex px-4">
               <div className=" invisible "> Type of user </div>
               <div className="mx-4 p-2 w-[30vw] rounded-3xl text-center bg-blue-100/80 placeholder:text-blue-700">
-                <div className="flex-col max-h-[100px] scroll-p-1 overflow-y-scroll">
+                <div className="flex-col max-h-[300px] scroll-p-1 overflow-y-scroll">
                   {final.map((result, id) => {
                     return (
                       <div
@@ -182,16 +182,12 @@ export default function Navbar() {
           {user && (
             <a
               onClick={() => auth.signOut()}
-              className="hover:cursor-pointer hover:bg-cyan-500 transition-colors duration-500 py-2 px-4 bg-cyan-200 mx-2  rounded-lg text-cyan-900"
+              className="hover:cursor-pointer flex w-auto items-center gap-1 hover:bg-cyan-500 transition-colors duration-500 py-2 px-2 bg-cyan-200 mx-2  rounded-lg text-cyan-900"
             >
+              <BiLogIn />
               Sign Out
             </a>
           )}
-          {/* <Link legacyBehavior href={"#"}>
-          <a className="hover:cursor-pointer hover:bg-teal-600 transition-colors duration-500 py-2 px-4 bg-teal-400 mx-2 rounded-lg text-white">
-            Search
-          </a>
-        </Link> */}
         </ul>
       </nav>
     </div>

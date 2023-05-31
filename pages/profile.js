@@ -75,19 +75,19 @@ function profile() {
     }, 1000);
   }, []);
   return (
-    <div>
+    <div className=" transition-all duration-200 ">
       <div>
         <div className="fixed top-0 w-full z-40">
           <Navbar />
         </div>
 
-        <div className=" mx-[10%] mt-[200px] font-poppins bg-[#F4F4F4] rounded-3xl min-h-screen p-14">
+        <div className=" mx-[10%] mt-[200px]  font-poppins w-fit bg-[#F4F4F4] rounded-3xl min-h-screen p-14">
           <div className="flex justify-center items-center mix-blend-multiply">
             <Image
               src="/avatar-scaled.jpeg"
               width={300}
               height={300}
-              alt="Profile Avatar"
+              alt="/avatar-scaled.jpeg"
             />
           </div>
           <div className="flex justify-center">
@@ -134,7 +134,7 @@ function profile() {
             )}
           </div>
 
-          <div className="p-10 flex justify-center items-center">
+          <div className="p-10 flex w-fit justify-center items-center">
             {tablevis.valueOf() == false && <div></div>}
             {tablevis.valueOf() == true && (
               <div>

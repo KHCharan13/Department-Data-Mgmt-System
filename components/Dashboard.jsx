@@ -1,17 +1,18 @@
 import React, { useState, useEffect, Fragment } from "react";
 import { useAuthState } from "react-firebase-hooks/auth";
 import { auth, db } from "../utils/firebase";
+import { updateProfile, updatePassword } from "firebase/auth";
+
 import { storage } from "../utils/firebase";
 import { ref, uploadBytes } from "firebase/storage";
-import { Dropdown, Collapse, Text } from "@nextui-org/react";
-
+import { Dropdown, Collapse, Spacer } from "@nextui-org/react";
+import { AiFillCloseCircle } from "react-icons/ai";
 import { collection, query, onSnapshot, where } from "firebase/firestore";
-import Req from "./req";
-import Image from "next/image";
+import Req1 from "./req1";
 import axios from "axios";
 import { Progress } from "@material-tailwind/react";
 import TabStud from "./tabstud";
-
+import { Modal, Text, Input, Button, Image } from "@nextui-org/react";
 function Dashboard() {
   const [user, loading] = useAuthState(auth);
   const [fileUpload, setfileUpload] = useState(null);
@@ -21,9 +22,14 @@ function Dashboard() {
   const [tablevis, setTableVis] = useState(false);
   const [modal, setModal] = useState(false);
   const [perc, setperc] = useState(0);
+  const [photo, setPhoto] = useState(null);
+  const [password, setPassword] = useState("");
+  const [password1, setPassword1] = useState("");
   if (user == null) {
     return;
   }
+  const [visible, setVisible] = useState(false);
+  const [visible1, setVisible1] = useState(false);
   const [filename, setFileName] = useState("");
   const [filetype, setFileType] = useState("");
   const [filedescription, setFileDescription] = useState("");
@@ -33,6 +39,44 @@ function Dashboard() {
       filetype: filetype,
       filedescription: filedescription,
     },
+  };
+  const handler = () => {
+    setVisible(true);
+  };
+  const closeHandler = () => {
+    setVisible(false);
+    setPhoto(null);
+  };
+
+  const handler1 = () => {
+    setVisible1(true);
+  };
+  const closeHandler1 = () => {
+    setVisible1(false);
+  };
+  const updatePass = () => {
+    updatePassword(user, password)
+      .then(() => {
+        closeHandler1();
+        alert("password updated successfully");
+      })
+      .catch((error) => {
+        alert(
+          "You were online for a quite some time please log out and log in again to update password"
+        );
+      });
+  };
+  const updatePhoto = () => {
+    const dname = user.displayName;
+    updateProfile(auth.currentUser, {
+      photoURL: photo,
+    })
+      .then(() => {
+        closeHandler();
+      })
+      .catch((error) => {
+        alert("error occured");
+      });
   };
 
   const getUsers = async () => {
@@ -47,7 +91,6 @@ function Dashboard() {
       );
     });
   };
-
   useEffect(() => {
     getUsers();
   }, []);
@@ -105,22 +148,40 @@ function Dashboard() {
 
   return (
     <Fragment>
-      <div>
-        <div className="mx-[10%] mt-10 font-poppins bg-[#F4F4F4] rounded-3xl min-h-screen p-14">
+      <div className="">
+        <div className="mt-10 md:mx-[10vw] font-poppins bg-[#F4F4F4] w-fit rounded-3xl min-h-screen p-14">
           <h1 className="flex justify-center py-10 font-bold text-5xl">
-            Welcome!
+            Welcome! {user.displayName}
           </h1>
-          <div className="flex justify-center items-center mix-blend-multiply">
-            <Image
-              src="/avatar-scaled.jpeg"
-              width={300}
-              height={300}
-              alt="Profile Avatar"
-            />
+          <div className="flex justify-center">
+            <div className="shadow-2xl rounded-full shadow-black">
+              {user.photoURL == null && (
+                <Image
+                  className="rounded-full mix-blend-multiply"
+                  showSkeleton
+                  src="/avatar-scaled.jpeg"
+                  objectFit="fill"
+                  width={300}
+                  height={300}
+                  alt="file not loaded"
+                />
+              )}
+              {user.photoURL != null && (
+                <Image
+                  className="rounded-full mix-blend-multiply"
+                  showSkeleton
+                  src={user.photoURL}
+                  objectFit="fill"
+                  width={300}
+                  height={300}
+                  alt="nothing"
+                />
+              )}
+            </div>
           </div>
           <div className="flex justify-center">
             {userDetails.map((items) => (
-              <Req {...items} key={items.id}></Req>
+              <Req1 {...items} key={items.id}></Req1>
             ))}
           </div>
           <div className="justify-center">
@@ -128,9 +189,15 @@ function Dashboard() {
             <div className="flex gap-8 justify-center ">
               <button
                 className="mt-10 bg-amber-300 w-fit px-5 py-3 rounded-lg hover:bg-amber-500 hover:text-white "
-                onClick={() => alert("Update Profile")}
+                onClick={() => handler1()}
               >
-                Edit Profile
+                Update password
+              </button>
+              <button
+                className="mt-10 bg-amber-300 w-fit px-5 py-3 rounded-lg hover:bg-amber-500 hover:text-white "
+                onClick={() => handler()}
+              >
+                Update Photo
               </button>
               <button
                 className="mt-10 bg-amber-300 w-fit px-5 py-3 rounded-lg hover:bg-amber-500 hover:text-white "
@@ -142,9 +209,17 @@ function Dashboard() {
           </div>
 
           {user.email.includes("4ni") && (
-            <div>
+            <div className=" w-fit ">
               {userDetails.map((items) => (
                 <TabStud {...items} key={items.id}></TabStud>
+              ))}{" "}
+            </div>
+          )}
+
+          {!user.email.includes("4ni") && (
+            <div>
+              {userDetails.map((items) => (
+                <TabLec {...items} key={items.id}></TabLec>
               ))}{" "}
             </div>
           )}
@@ -215,10 +290,123 @@ function Dashboard() {
           </div>
         </div>
       </div>
+      <Modal
+        closeButton
+        blur
+        aria-labelledby="modal-title"
+        open={visible}
+        onClose={closeHandler}
+      >
+        <Modal.Header>
+          <Text id="modal-title" size={18}>
+            <Text b size={18}>
+              Upload photo URL
+            </Text>
+          </Text>
+        </Modal.Header>
+        <Modal.Body>
+          <Text id="modal-title" size={18}>
+            <div className="font-poppins flex-col justify-center mt-7">
+              <Input
+                clearable
+                fullWidth="true"
+                bordered
+                onChange={(e) => setPhoto(e.target.value)}
+                color="default"
+                labelPlaceholder="Photo URL"
+              />
+              Preview Image :
+              {photo != null && photo != "" && (
+                <Image src={photo} alt="invalid url" />
+              )}
+            </div>
+          </Text>
+        </Modal.Body>
+        <Modal.Footer>
+          <Button auto flat color="default" onPress={() => updatePhoto()}>
+            Update Photo
+          </Button>
+          <Button auto flat color="error" onPress={closeHandler}>
+            Close
+          </Button>
+        </Modal.Footer>
+      </Modal>
+      <Modal
+        closeButton
+        blur
+        aria-labelledby="modal-title"
+        open={visible1}
+        onClose={closeHandler1}
+      >
+        <Modal.Header>
+          <Text id="modal-title" size={18}>
+            <Text b size={18}>
+              Update password
+            </Text>
+            <input type="text"></input>
+          </Text>
+        </Modal.Header>
+        <Modal.Body>
+          <div>
+            <div className="font-poppins flex-col justify-center mt-3">
+              <Input.Password
+                fullWidth="true"
+                bordered
+                onChange={(e) => setPassword(e.target.value)}
+                color="default"
+                labelPlaceholder="Enter New Password"
+              />
+              <Spacer y={1.6} />
+              <Input.Password
+                fullWidth="true"
+                bordered
+                onChange={(e) => setPassword1(e.target.value)}
+                color="default"
+                labelPlaceholder="Re-Enter New Password"
+              />
+              <Spacer y={1} />
+              {password.length < 8 && (
+                <h1 className="text-sm text-red-300">
+                  Password should be 8 characters long
+                </h1>
+              )}
+              {password != null &&
+                password1 != null &&
+                password.length > 8 &&
+                password != password1 && (
+                  <h1 className="text-sm text-red-300">
+                    Passwords do not match
+                  </h1>
+                )}
+            </div>
+          </div>
+        </Modal.Body>
+        <Modal.Footer>
+          {password != null &&
+            password1 != null &&
+            password.length > 8 &&
+            password === password1 && (
+              <Button
+                auto
+                flat
+                color="default"
+                onPress={() => {
+                  updatePass();
+                }}
+              >
+                Update Password
+              </Button>
+            )}
+          <Button auto flat color="error" onPress={closeHandler1}>
+            Close
+          </Button>
+        </Modal.Footer>
+      </Modal>
+
       {modal.valueOf() == false && <div></div>}
       {modal.valueOf() == true && (
         <div>
-          <div className="fixed inset-0 bg-black bg-opacity-25 backdrop-blur-sm flex justify-center items-center font-poppins">
+          <div className="fixed inset-0 z-50 bg-black bg-opacity-25 backdrop-blur-sm flex justify-center items-center font-poppins">
             <div className="flex flex-col">
               <div className=" bg-white rounded-3xl px-14 py-12">
                 <div className="flex justify-between">
@@ -228,7 +416,7 @@ function Dashboard() {
                       className="text-2xl"
                       onClick={() => setModal(false)}
                     >
-                      x
+                      <AiFillCloseCircle />
                     </button>
                   </div>
                 </div>
@@ -256,31 +444,57 @@ function Dashboard() {
                   <br />
                   <div class="flex items-center justify-evenly">
                     <h1>Type of File</h1>
-                    <Dropdown>
-                      <Dropdown.Button id="asd" flat>
-                        Type of File
-                      </Dropdown.Button>
-                      <Dropdown.Menu
-                        onAction={(key) => {
-                          console.log(key);
-                          document.getElementById("asd").textContent = key;
-                          setFileType(key);
-                        }}
-                        aria-label="Static Actions"
-                      >
-                        <Dropdown.Item key="activitypoints">
-                          Activity Points
-                        </Dropdown.Item>
-                        <Dropdown.Item key="projects">
-                          Project Documents
-                        </Dropdown.Item>
-                        <Dropdown.Item key="seminar">Seminars</Dropdown.Item>
-                        <Dropdown.Item key="resume">Resume</Dropdown.Item>
-                        <Dropdown.Item key="others" color="error">
-                          Other
-                        </Dropdown.Item>
-                      </Dropdown.Menu>
-                    </Dropdown>
+                    {user.email.includes("4ni") && (
+                      <Dropdown>
+                        <Dropdown.Button id="asd" flat>
+                          Type of File
+                        </Dropdown.Button>
+                        <Dropdown.Menu
+                          onAction={(key) => {
+                            console.log(key);
+                            document.getElementById("asd").textContent = key;
+                            setFileType(key);
+                          }}
+                          aria-label="Static Actions"
+                        >
+                          <Dropdown.Item key="activitypoints">
+                            Activity Points
+                          </Dropdown.Item>
+                          <Dropdown.Item key="projects">
+                            Project Documents
+                          </Dropdown.Item>
+                          <Dropdown.Item key="seminar">Seminars</Dropdown.Item>
+                          <Dropdown.Item key="resume">Resume</Dropdown.Item>
+                          <Dropdown.Item key="others" color="error">
+                            Other
+                          </Dropdown.Item>
+                        </Dropdown.Menu>
+                      </Dropdown>
+                    )}
+                    {!user.email.includes("4ni") && (
+                      <Dropdown>
+                        <Dropdown.Button id="asd" flat>
+                          Type of File
+                        </Dropdown.Button>
+                        <Dropdown.Menu
+                          onAction={(key) => {
+                            document.getElementById("asd").textContent = key;
+                            setFileType(key);
+                          }}
+                          aria-label="Static Actions"
+                        >
+                          <Dropdown.Item key="journal">Journal</Dropdown.Item>
+                          <Dropdown.Item key="research">
+                            Research Papers
+                          </Dropdown.Item>
+                          <Dropdown.Item key="seminar">Seminars</Dropdown.Item>
+                          <Dropdown.Item key="resume">Resume</Dropdown.Item>
+                          <Dropdown.Item key="others" color="error">
+                            Other
+                          </Dropdown.Item>
+                        </Dropdown.Menu>
+                      </Dropdown>
+                    )}
                   </div>
                   {/* <label className="mt-3" htmlFor="Type">
                     Document Type

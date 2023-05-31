@@ -30,7 +30,7 @@ export default function TabStud({ children, email, uid, name, type }) {
     }
   }, []);
   return (
-    <div className="m-8 justify-center items-center">
+    <div className="m-8 justify-center w-fit items-center">
       <div>
         <Collapse.Group accordion={false}>
           <Collapse title="Activity Points">
