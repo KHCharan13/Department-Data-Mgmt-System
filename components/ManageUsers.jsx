@@ -254,7 +254,7 @@ function ManageUsers() {
         blur
         aria-labelledby="modal-title"
         open={visible1}
-        onClose={closeHandler}
+        onClose={closeHandler1}
       >
         <Modal.Header>
           <Text id="modal-title" size={18}>
@@ -274,7 +274,7 @@ function ManageUsers() {
           </Text>
         </Modal.Body>
         <Modal.Footer>
-          <Button auto flat color="error" onPress={closeHandler}>
+          <Button auto flat color="error" onPress={closeHandler1}>
             Close
           </Button>
           <Button auto onClick={() => deleteReq()}>
